@@ -1,5 +1,5 @@
 const chalk = require("chalk");
-const getNotes = require("./notes.js");
+const notesUtil = require("./notes.js");
 const yargs = require("yargs");
 
 //Get input from command line
@@ -29,32 +29,46 @@ yargs.command({
 			type: "string",
 		},
 	},
-	handler: function (argv) {
-		console.log(argv.title + " | " + argv.body);
+	handler(argv) {
+		notesUtil.addNotes(argv.title, argv.body);
 	},
 });
 
 yargs.command({
 	command: "remove",
 	describe: "Remove a note",
-	handler: function () {
-		console.log("Removing note");
+	builder: {
+		title: {
+			describe: "Specify title of note to be removed",
+			demandOption: true,
+			type: "string",
+		},
+	},
+	handler(argv) {
+		notesUtil.removeNotes(argv.title);
 	},
 });
 
 yargs.command({
 	command: "list",
 	describe: "List all notes",
-	handler: function () {
-		console.log("Listing all the notes");
+	handler() {
+		notesUtil.listNotes();
 	},
 });
 
 yargs.command({
 	command: "read",
 	describe: "Read a note",
-	handler: function () {
-		console.log("Reading a note");
+	builder: {
+		title: {
+			describe: "Specify title of note",
+			demandOption: true,
+			type: "string",
+		},
+	},
+	handler(argv) {
+		notesUtil.readNotes(argv.title);
 	},
 });
 
