@@ -8,10 +8,10 @@ const weatherAPI = (geoData, callback) => {
 		} else if (response.body.error) {
 			callback("Unable to find location.");
 		} else {
-			const data = response.body;
+			const { temperature, feelslike } = response.body.current;
 			callback(undefined, {
-				temperature: data.current.temperature,
-				feelslike: data.current.feelslike,
+				temperature,
+				feelslike,
 			});
 		}
 	});

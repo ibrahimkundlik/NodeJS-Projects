@@ -13,10 +13,11 @@ const geocodeAPI = (address, callback) => {
 				"Unable to find co-ordinates for given location. Try another search."
 			);
 		} else {
+			const { features } = response.body;
 			callback(undefined, {
-				longitude: response.body.features[0].center[0],
-				latitude: response.body.features[0].center[1],
-				location: response.body.features[0].place_name,
+				longitude: features[0].center[0],
+				latitude: features[0].center[1],
+				location: features[0].place_name,
 			});
 		}
 	});

@@ -1,7 +1,14 @@
 const geocodeAPI = require("./utils/geocodeAPI");
 const weatherAPI = require("./utils/weatherAPI");
 
-geocodeAPI("bncbvncb", (error, geoData) => {
+const command = process.argv[2];
+
+if (!command) {
+	console.log("Please add location.");
+	return;
+}
+
+geocodeAPI(command, (error, geoData) => {
 	if (error) {
 		console.log(error);
 		return;
@@ -11,8 +18,8 @@ geocodeAPI("bncbvncb", (error, geoData) => {
 			console.log(error);
 			return;
 		}
-		console.log(geoData.location);
-		console.log(weatherData.temperature);
-		console.log(weatherData.feelslike);
+		const { location } = geoData;
+		const { temperature, feelslike } = weatherData;
+		console.log(location, temperature, feelslike);
 	});
 });
