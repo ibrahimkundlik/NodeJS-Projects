@@ -1,14 +1,14 @@
 const geocodeAPI = require("./utils/geocodeAPI");
 const weatherAPI = require("./utils/weatherAPI");
 
-const command = process.argv[2];
+const input = process.argv[2];
 
-if (!command) {
+if (!input) {
 	console.log("Please add location.");
 	return;
 }
 
-geocodeAPI(command, (error, geoData) => {
+geocodeAPI(input, (error, geoData) => {
 	if (error) {
 		console.log(error);
 		return;
