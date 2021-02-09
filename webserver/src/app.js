@@ -18,21 +18,21 @@ hbs.registerPartials(partialPath);
 app.get("", (req, res) => {
 	res.render("index", {
 		title: "Weather",
-		author: "Andrew",
+		author: "Ibrahim",
 	});
 });
 
 app.get("/about", (req, res) => {
 	res.render("about", {
 		title: "About",
-		author: "Andrew",
+		author: "Ibrahim",
 	});
 });
 
 app.get("/help", (req, res) => {
 	res.render("help", {
 		title: "Help",
-		author: "Andrew",
+		author: "Ibrahim",
 		mssg: "Contact 999 for help related queries",
 	});
 });
@@ -47,7 +47,7 @@ app.get("/weather", (req, res) => {
 app.get("/help/*", (req, res) => {
 	res.render("errorPage", {
 		title: "Error",
-		author: "Andrew",
+		author: "Ibrahim",
 		mssg: "404 error on /help - Page not found",
 	});
 });
@@ -55,7 +55,7 @@ app.get("/help/*", (req, res) => {
 app.get("*", (req, res) => {
 	res.render("errorPage", {
 		title: "Error",
-		author: "Andrew",
+		author: "Ibrahim",
 		mssg: "404 error - Page not found",
 	});
 });

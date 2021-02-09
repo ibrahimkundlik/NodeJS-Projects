@@ -1,6 +1,45 @@
-h1 {
-	color: coral;
+* {
+	margin: 0;
+	padding: 0;
 }
-p {
-	color: blueviolet;
+img {
+	width: 100%;
+}
+body {
+	background: rgb(255, 132, 0);
+	background: linear-gradient(
+		45deg,
+		rgba(255, 132, 0, 0.6222688904663427) 0%,
+		rgba(0, 159, 255, 0.5) 100%
+	);
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: 100vh;
+	color: rgb(15, 15, 15);
+	font-family: Helvetica, Arial, sans-serif;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	align-items: center;
+}
+header {
+	text-align: center;
+}
+header h1 {
+	margin: 2rem 0;
+}
+header a {
+	color: rgb(47, 91, 136);
+	text-decoration: none;
+	margin: 0 0.5rem;
+	border-bottom: 3px double;
+}
+footer {
+	margin: 2rem 0;
+}
+.profile-cont {
+	width: 200px;
+}
+.profile-cont img {
+	border-radius: 50%;
 }
