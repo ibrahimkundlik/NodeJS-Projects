@@ -9,9 +9,14 @@
 	</head>
 	<body>
 		{{>header}}
-		<div>
-			<p>Main Content</p>
-		</div>
+		<form>
+			<input placeholder="Location" type="text" name="address" id="address">
+			<button type="submit">Search</button>
+			<button type="reset">Clear</button>
+			<div class="weather">
+
+			</div>
+		</form>
 		{{>footer}}
 		<script src="../js/app.js"></script>
 	</body>
