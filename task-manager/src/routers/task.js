@@ -16,9 +16,32 @@ router.post("/tasks", auth, async (req, res) => {
 	}
 });
 
+// GET tasks
+// completed - filtering
+// limit, skip - pagination
+// sortBy - sorting
 router.get("/tasks", auth, async (req, res) => {
+	const match = {};
+	if (req.query.completed) {
+		match.completed = req.query.completed === "true";
+	}
+	const sort = {};
+	if (req.query.sortBy) {
+		const part = req.query.sortBy.split(":");
+		sort[part[0]] = part[1] === "asc" ? 1 : -1;
+	}
 	try {
-		await req.user.populate("myTask").execPopulate();
+		await req.user
+			.populate({
+				path: "myTask",
+				match,
+				options: {
+					limit: parseInt(req.query.limit),
+					skip: parseInt(req.query.skip),
+					sort,
+				},
+			})
+			.execPopulate();
 		res.send(req.user.myTask);
 	} catch (err) {
 		res.status(500).send(err);
