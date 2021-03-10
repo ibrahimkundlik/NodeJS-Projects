@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Task = require("./task");
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -51,6 +52,22 @@ const userSchema = new mongoose.Schema({
 	],
 });
 
+// Adding relationship between users & tasks
+userSchema.virtual("myTask", {
+	ref: "Task",
+	localField: "_id",
+	foreignField: "owner",
+});
+
+// Hiding private data
+userSchema.methods.toJSON = function () {
+	const user = this;
+	const userObject = user.toObject();
+	delete userObject.password;
+	delete userObject.tokens;
+	return userObject;
+};
+
 // User login function
 userSchema.statics.loginCredentials = async (email, password) => {
 	const user = await User.findOne({ email });
@@ -84,6 +101,13 @@ userSchema.pre("save", async function (next) {
 	next();
 });
 
-const User = mongoose.model("users", userSchema);
+// Delete user task when user is removed
+userSchema.pre("remove", async function (next) {
+	const user = this;
+	await Task.deleteMany({ owner: user._id });
+	next();
+});
+
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
