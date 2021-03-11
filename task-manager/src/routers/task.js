@@ -16,7 +16,7 @@ router.post("/tasks", auth, async (req, res) => {
 	}
 });
 
-// GET tasks
+// GET tasks + queries
 // completed - filtering
 // limit, skip - pagination
 // sortBy - sorting
