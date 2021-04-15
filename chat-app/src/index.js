@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const socketio = require("socket.io");
 const Filter = require("bad-words");
+const { generateMessage, generateLocation } = require("./utils/messages");
 
 const app = express();
 const server = http.createServer(app);
@@ -16,9 +17,12 @@ app.use(express.static(dirPath));
 //connect with new client
 io.on("connection", (socket) => {
 	//emit to particular connection
-	socket.emit("message", "Welcome to Chat App.");
+	socket.emit("message", generateMessage("Welcome to Chat App."));
 	//emit to all except particular connection
-	socket.broadcast.emit("message", "New User has joined the chat.");
+	socket.broadcast.emit(
+		"message",
+		generateMessage("New User has joined the chat.")
+	);
 
 	socket.on("sendMessage", (message, callback) => {
 		//check badwords
@@ -28,20 +32,20 @@ io.on("connection", (socket) => {
 		}
 
 		//emit to all connections
-		io.emit("message", message);
+		io.emit("message", generateMessage(message));
 		callback();
 	});
 
 	//when client disconnects
 	socket.on("disconnect", () => {
-		io.emit("message", "A user has left the chat.");
+		io.emit("message", generateMessage("A user has left the chat."));
 	});
 
 	//client location
 	socket.on("sendLocation", ({ latitude, longitude }, callback) => {
 		socket.broadcast.emit(
-			"message",
-			`🗺️ https://www.google.com/maps?q=${latitude},${longitude}`
+			"locationMessage",
+			generateLocation(`https://www.google.com/maps?q=${latitude},${longitude}`)
 		);
 		callback();
 	});

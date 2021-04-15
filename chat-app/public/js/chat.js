@@ -1,10 +1,29 @@
 const socket = io();
-const chatForm = document.querySelector(".chat-form");
-const message = document.querySelector("#message");
-const locationBtn = document.querySelector(".location");
 
-socket.on("message", (mssg) => {
-	console.log(mssg);
+//elements
+const chatForm = document.querySelector(".chat-form");
+const locationBtn = document.querySelector(".location");
+const message = document.getElementById("message");
+const messages = document.getElementById("messages");
+
+//templates
+const messageTemplate = document.getElementById("message-template").innerHTML;
+const locationTemplate = document.getElementById("location-template").innerHTML;
+
+socket.on("message", ({ text, createdAt }) => {
+	const html = Mustache.render(messageTemplate, {
+		text,
+		createdAt: moment(createdAt).format("hh:mm a"),
+	});
+	messages.insertAdjacentHTML("beforeend", html);
+});
+
+socket.on("locationMessage", ({ url, createdAt }) => {
+	const html = Mustache.render(locationTemplate, {
+		url,
+		createdAt: moment(createdAt).format("hh:mm a"),
+	});
+	messages.insertAdjacentHTML("beforeend", html);
 });
 
 chatForm.addEventListener("submit", (e) => {
