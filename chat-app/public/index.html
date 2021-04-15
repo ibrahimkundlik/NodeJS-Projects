@@ -4,59 +4,22 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
-		<title>Chat App 💬</title>
+		<link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon" />
+		<title>CHAT APP</title>
 		<link rel="stylesheet" href="./css/styles.css" />
 	</head>
 	<body>
-		<div class="chat">
-			<div class="chat__sidebar"></div>
-			<div class="chat__main">
-				<!-- Location to render Mustache Template -->
-				<div id="messages" class="chat__messages"></div>
-
-				<div class="compose">
-					<form class="chat-form" autocomplete="off">
-						<input
-							type="text"
-							placeholder="Message"
-							name="message"
-							id="message"
-							required
-						/>
-						<button type="submit">Send Message</button>
-					</form>
-					<button class="location">Send Location</button>
-				</div>
+		<div class="centered-form">
+			<div class="centered-form__box">
+				<h1>Chat Group</h1>
+				<form autocomplete="off" action="./chat.html">
+					<label>Display Name</label>
+					<input type="text" name="username" required placeholder="Name" />
+					<label>Enter Room</label>
+					<input type="text" name="room" required placeholder="Room" />
+					<button>Join</button>
+				</form>
 			</div>
 		</div>
-
-		<!-- Mustache Template -->
-		<script id="message-template" type="text/html">
-			<div class="message">
-				<p>
-					<span class="message__name">User</span
-					><span class="message__meta">{{createdAt}}</span>
-				</p>
-				<p>{{text}}</p>
-			</div>
-		</script>
-		<script id="location-template" type="text/html">
-			<div class="message">
-				<p>
-					<span class="message__name">User</span
-					><span class="message__meta">{{createdAt}}</span>
-				</p>
-				<p>
-					<a href="{{ url }}" target="_blank">Current Location </a>
-				</p>
-			</div>
-		</script>
-
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="./js/chat.js"></script>
 	</body>
 </html>

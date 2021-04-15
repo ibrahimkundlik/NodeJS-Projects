@@ -16,13 +16,16 @@ app.use(express.static(dirPath));
 
 //connect with new client
 io.on("connection", (socket) => {
-	//emit to particular connection
-	socket.emit("message", generateMessage("Welcome to Chat App."));
-	//emit to all except particular connection
-	socket.broadcast.emit(
-		"message",
-		generateMessage("New User has joined the chat.")
-	);
+	//room specific connections
+	socket.on("join", ({ username, room }) => {
+		socket.join(room);
+		//emit to particular connection
+		socket.emit("message", generateMessage("Welcome to Chat App."));
+		//emit to all except particular connection
+		socket.broadcast
+			.to(room)
+			.emit("message", generateMessage(`${username} has joined the chat.`));
+	});
 
 	socket.on("sendMessage", (message, callback) => {
 		//check badwords
@@ -32,7 +35,7 @@ io.on("connection", (socket) => {
 		}
 
 		//emit to all connections
-		io.emit("message", generateMessage(message));
+		io.to().emit("message", generateMessage(message));
 		callback();
 	});
 

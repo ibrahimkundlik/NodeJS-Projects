@@ -10,6 +10,11 @@ const messages = document.getElementById("messages");
 const messageTemplate = document.getElementById("message-template").innerHTML;
 const locationTemplate = document.getElementById("location-template").innerHTML;
 
+//options
+const { username, room } = Qs.parse(location.search, {
+	ignoreQueryPrefix: true,
+});
+
 socket.on("message", ({ text, createdAt }) => {
 	const html = Mustache.render(messageTemplate, {
 		text,
@@ -37,7 +42,6 @@ chatForm.addEventListener("submit", (e) => {
 		if (error) {
 			return console.log(error);
 		}
-		console.log("Message Delievered :)");
 	});
 });
 
@@ -51,7 +55,8 @@ locationBtn.addEventListener("click", () => {
 		const { latitude, longitude } = position.coords;
 		socket.emit("sendLocation", { latitude, longitude }, () => {
 			locationBtn.removeAttribute("disabled");
-			console.log("Location Shared :)");
 		});
 	});
 });
+
+socket.emit("join", { username, room });
