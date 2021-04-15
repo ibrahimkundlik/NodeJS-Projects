@@ -9,28 +9,46 @@
 		<link rel="stylesheet" href="./css/styles.css" />
 	</head>
 	<body>
-		<h1>Chat App</h1>
+		<div class="chat">
+			<div class="chat__sidebar"></div>
+			<div class="chat__main">
+				<!-- Location to render Mustache Template -->
+				<div id="messages" class="chat__messages"></div>
 
-		<!-- Location to render Mustache Template -->
-		<div id="messages"></div>
-
-		<form class="chat-form" autocomplete="off">
-			<input type="text" name="message" id="message" required />
-			<button type="submit">Send Message</button>
-		</form>
-		<button class="location">Send Location</button>
+				<div class="compose">
+					<form class="chat-form" autocomplete="off">
+						<input
+							type="text"
+							placeholder="Message"
+							name="message"
+							id="message"
+							required
+						/>
+						<button type="submit">Send Message</button>
+					</form>
+					<button class="location">Send Location</button>
+				</div>
+			</div>
+		</div>
 
 		<!-- Mustache Template -->
 		<script id="message-template" type="text/html">
-			<div>
-				<p>{{createdAt}} - {{text}}</p>
+			<div class="message">
+				<p>
+					<span class="message__name">User</span
+					><span class="message__meta">{{createdAt}}</span>
+				</p>
+				<p>{{text}}</p>
 			</div>
 		</script>
 		<script id="location-template" type="text/html">
-			<div>
+			<div class="message">
 				<p>
-					{{createdAt}} -
-					<a href="{{ url }}" target="_blank">Shared Location </a>
+					<span class="message__name">User</span
+					><span class="message__meta">{{createdAt}}</span>
+				</p>
+				<p>
+					<a href="{{ url }}" target="_blank">Current Location </a>
 				</p>
 			</div>
 		</script>
