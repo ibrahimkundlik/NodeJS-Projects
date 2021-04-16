@@ -4,6 +4,12 @@ const http = require("http");
 const socketio = require("socket.io");
 const Filter = require("bad-words");
 const { generateMessage, generateLocation } = require("./utils/messages");
+const {
+	addUser,
+	removeUser,
+	getUser,
+	getUsersInRoom,
+} = require("./utils/users");
 
 const app = express();
 const server = http.createServer(app);
@@ -17,14 +23,26 @@ app.use(express.static(dirPath));
 //connect with new client
 io.on("connection", (socket) => {
 	//room specific connections
-	socket.on("join", ({ username, room }) => {
-		socket.join(room);
+	socket.on("join", ({ username, room }, callback) => {
+		const { user, error } = addUser({
+			id: socket.id,
+			username,
+			room,
+		});
+		if (error) {
+			return callback(error);
+		}
+		socket.join(user.room);
 		//emit to particular connection
 		socket.emit("message", generateMessage("Welcome to Chat App."));
 		//emit to all except particular connection
 		socket.broadcast
-			.to(room)
-			.emit("message", generateMessage(`${username} has joined the chat.`));
+			.to(user.room)
+			.emit(
+				"message",
+				generateMessage(`${user.username} has joined the chat.`)
+			);
+		callback();
 	});
 
 	socket.on("sendMessage", (message, callback) => {
@@ -41,7 +59,13 @@ io.on("connection", (socket) => {
 
 	//when client disconnects
 	socket.on("disconnect", () => {
-		io.emit("message", generateMessage("A user has left the chat."));
+		const user = removeUser(socket.id);
+		if (user) {
+			io.to(user.room).emit(
+				"message",
+				generateMessage(`${user.username} has left the chat.`)
+			);
+		}
 	});
 
 	//client location
