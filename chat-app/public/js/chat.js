@@ -9,26 +9,37 @@ const messages = document.getElementById("messages");
 //templates
 const messageTemplate = document.getElementById("message-template").innerHTML;
 const locationTemplate = document.getElementById("location-template").innerHTML;
+const sidebarTemplate = document.getElementById("sidebar-template").innerHTML;
 
 //options
 const { username, room } = Qs.parse(location.search, {
 	ignoreQueryPrefix: true,
 });
 
-socket.on("message", ({ text, createdAt }) => {
+socket.on("message", ({ username, text, createdAt }) => {
 	const html = Mustache.render(messageTemplate, {
+		username,
 		text,
 		createdAt: moment(createdAt).format("hh:mm a"),
 	});
 	messages.insertAdjacentHTML("beforeend", html);
 });
 
-socket.on("locationMessage", ({ url, createdAt }) => {
+socket.on("locationMessage", ({ username, url, createdAt }) => {
 	const html = Mustache.render(locationTemplate, {
+		username,
 		url,
 		createdAt: moment(createdAt).format("hh:mm a"),
 	});
 	messages.insertAdjacentHTML("beforeend", html);
+});
+
+socket.on("roomData", ({ room, users }) => {
+	const html = Mustache.render(sidebarTemplate, {
+		room,
+		users,
+	});
+	document.querySelector(".chat__sidebar").innerHTML = html;
 });
 
 chatForm.addEventListener("submit", (e) => {
