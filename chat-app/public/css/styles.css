@@ -194,10 +194,11 @@ button:disabled {
 }
 
 .list-title {
-	font-weight: 500;
+	font-weight: bold;
 	font-size: 18px;
 	margin-bottom: 4px;
 	padding: 12px 24px 0 24px;
+	color: #6b47b8;
 }
 
 .users {
